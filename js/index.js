@@ -70,14 +70,14 @@ class Calculator {
 	}
 
 	processEquals() {
-		if(!!this.operator) {
-			this.displayNumber(this.current, this.lastEnteredOutput);
-			this.answer = eval(this.entered + this.operator + this.current);
-			this.displayNumber(this.answer, this.currentOutput);
-
-			this.current = this.answer;
-		}
-	}
+        if (this.operator) {
+            this.displayNumber(this.current, this.lastEnteredOutput);
+            this.answer = eval(`${this.entered}${this.operator}${this.current}`);
+            this.displayNumber(this.answer, this.currentOutput);
+            
+            this.current = this.answer;
+        }
+    }
 
 	processClear() {
 		this.current = 0;
@@ -114,31 +114,36 @@ class Calculator {
 	}
 
 	processASDM(a) {
-		if(!!this.entered && !!!this.answer) {
-			return;
-		}
-
-		if(this.answer) {
-			this.lastEnteredOutput.innerHTML = '';
-		}
-
-		this.decimal = false;
-		this.operator = a;
-		this.entered = this.current;
-		this.displayNumber(this.entered, this.firstEnteredOutput);
-		a === '*' ? this.operatorOutput.innerHTML = 'x' : this.operatorOutput.innerHTML = this.operator;
-		this.current = 0;
-		this.displayNumber(this.current, this.currentOutput);
-	}
+        if (!!this.entered && !!!this.answer) {
+            return;
+        }
+    
+        if (this.answer) {
+            this.lastEnteredOutput.innerHTML = '';
+        }
+    
+        this.decimal = false;
+        this.operator = a;
+        this.entered = this.current;
+        this.displayNumber(this.entered, this.firstEnteredOutput);
+    
+        switch (a) {
+            case '*':
+                this.operatorOutput.innerHTML = 'x';
+                break;
+            default:
+                this.operatorOutput.innerHTML = this.operator;
+                break;
+        }
+    
+        this.current = 0;
+        this.displayNumber(this.current, this.currentOutput);
+    }
 
 	processNumber(n) {
-    if (this.current === 0) {
-        this.current = n;
-    } else if (this.current.toString().length < 10) {
-        this.current += n;
-    }
-    this.displayNumber(this.current, this.currentOutput);
-    }
+		this.current === 0 ? this.current = n : this.current += n;
+		this.displayNumber(this.current, this.currentOutput);
+	}
 
 	displayNumber(n, location) {
 		location.innerHTML = String(n).substring(0, 10);
