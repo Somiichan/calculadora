@@ -141,6 +141,11 @@ p, h1, h2, h3, h4, h5, h6, i {
 .calculator .buttons div:nth-child(20) p {
     color: hsl(27, 100%, 66%);
 }
+
+.calculator .buttons div:nth-child(19) p {
+    color: hsl(9, 100%, 66%);
+}
+
 .calculator .buttons div p {
     font-size: 22px;
     color: hsl(0, 0%, 100%);

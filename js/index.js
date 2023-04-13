@@ -20,7 +20,7 @@ class Calculator {
 			['sqrt', this.processSqrt.bind(this)],
 			['inv', this.processInv.bind(this)],
 			['comma', this.processComma.bind(this)],
-			['pi', this.processPi.bind(this)]
+			['erase', this.processErase.bind(this)]
 		];
 
 		this.firstEnteredOutput = document.querySelector('.f_entered');
@@ -101,15 +101,18 @@ class Calculator {
 
 	processComma() {
 		if(!this.decimal) {
-			this.current += '.';
+			this.current += ',';
 			this.currentOutput.innerHTML = this.current;
 		}
 
 		this.decimal = true;
 	}
 
-	processPi() {
-		this.current = Math.PI;
+	processErase() {
+		this.current = this.current.slice(0, -1);
+		if (this.current === "") {
+		  this.current = 0; // display zero if no more numbers left
+		}
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
@@ -141,7 +144,13 @@ class Calculator {
     }
 
 	processNumber(n) {
-		this.current === 0 ? this.current = n : this.current += n;
+		if (this.current === 0) {
+		  this.current = n; // replace zero with input number
+		} else if (this.current === "0" && n !== 0) {
+		  this.current = n; // replace single zero with input number
+		} else {
+		  this.current += n; // append input number to current value
+		}
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
