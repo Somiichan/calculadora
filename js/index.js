@@ -111,7 +111,7 @@ class Calculator {
 	processErase() {
 		this.current = this.current.slice(0, -1);
 		if (this.current === "") {
-		  this.current = 0; // display zero if no more numbers left
+		this.current = 0;
 		}
 		this.displayNumber(this.current, this.currentOutput);
 	}
@@ -145,11 +145,11 @@ class Calculator {
 
 	processNumber(n) {
 		if (this.current === 0) {
-		  this.current = n; // replace zero with input number
+		this.current = n;
 		} else if (this.current === "0" && n !== 0) {
-		  this.current = n; // replace single zero with input number
+		this.current = n;
 		} else {
-		  this.current += n; // append input number to current value
+		this.current += n;
 		}
 		this.displayNumber(this.current, this.currentOutput);
 	}
