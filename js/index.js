@@ -11,7 +11,7 @@ class Calculator {
 
 		this.states = {
 			'inv': false,
-			'comma': false
+			'comma': false,
 		}
 
 		this.options = [
@@ -20,7 +20,7 @@ class Calculator {
 			['sqrt', this.processSqrt.bind(this)],
 			['inv', this.processInv.bind(this)],
 			['comma', this.processComma.bind(this)],
-			['erase', this.processErase.bind(this)]
+			['erase', this.processErase.bind(this)],
 		];
 
 		this.firstEnteredOutput = document.querySelector('.f_entered');
@@ -101,7 +101,7 @@ class Calculator {
 
 	processComma() {
 		if(!this.decimal) {
-			this.current += ',';
+			this.current += '.';
 			this.currentOutput.innerHTML = this.current;
 		}
 
@@ -145,12 +145,13 @@ class Calculator {
 
 	processNumber(n) {
 		if (this.current === 0) {
-		this.current = n;
+			this.current = n;
 		} else if (this.current === "0" && n !== 0) {
-		this.current = n;
+			this.current = n;
 		} else {
-		this.current += n;
+			this.current += n;
 		}
+		this.decimal = false; // reset decimal flag
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
