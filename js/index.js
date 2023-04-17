@@ -4,13 +4,10 @@ class Calculator {
 		this.current = 0;
 		this.entered = 0;
 		this.answer = 0;
-
 		this.decimal = false;
-
 		this.operator = '';
 
 		this.states = {
-			'inv': false,
 			'comma': false,
 		}
 
@@ -18,7 +15,7 @@ class Calculator {
 			['equals', this.processEquals.bind(this)],
 			['clear', this.processClear.bind(this)],
 			['sqrt', this.processSqrt.bind(this)],
-			['inv', this.processInv.bind(this)],
+			['mod', this.processMod.bind(this)],
 			['comma', this.processComma.bind(this)],
 			['erase', this.processErase.bind(this)],
 		];
@@ -70,14 +67,13 @@ class Calculator {
 	}
 
 	processEquals() {
-        if (this.operator) {
-            this.displayNumber(this.current, this.lastEnteredOutput);
-            this.answer = eval(`${this.entered}${this.operator}${this.current}`);
-            this.displayNumber(this.answer, this.currentOutput);
-            
-            this.current = this.answer;
-        }
-    }
+		if (this.operator) {
+		  this.displayNumber(this.current, this.lastEnteredOutput);
+		  this.answer = this.operator === '%' ? this.entered % this.current : eval(`${this.entered}${this.operator}${this.current}`);
+		  this.displayNumber(this.answer, this.currentOutput);
+		  this.current = this.answer;
+		}
+	}
 
 	processClear() {
 		this.current = 0;
@@ -94,8 +90,23 @@ class Calculator {
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
-	processInv() {
-		this.current = this.current * -1;
+	processMod() {
+		if (!!this.entered && !!!this.answer) {
+		  return;
+		}
+	  
+		if (this.answer) {
+		  this.lastEnteredOutput.innerHTML = '';
+		}
+	  
+		this.decimal = false;
+		this.operator = '%';
+		this.entered = this.current;
+		this.displayNumber(this.entered, this.firstEnteredOutput);
+	  
+		this.operatorOutput.innerHTML = this.operator;
+	  
+		this.current = 0;
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
@@ -151,12 +162,17 @@ class Calculator {
 		} else {
 			this.current += n;
 		}
-		this.decimal = false; // reset decimal flag
+		this.decimal = false;
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
 	displayNumber(n, location) {
 		location.innerHTML = String(n).substring(0, 10);
+		if (n < 0) {
+			location.innerHTML = "-" + String(-n).substring(0, 9);
+		} else {
+			location.innerHTML = String(n).substring(0, 10);
+		}
 	}
 }
 
