@@ -27,27 +27,24 @@ class Calculator {
 		this.currentOutput = document.querySelector('.current > h1');
 		this.buttons = document.querySelectorAll('.buttons > div');
 
-		for(var i = 0, n = this.buttons.length; i < n; i++) {
-			var calc = this;
-			var button = this.buttons[i];
+		this.buttons.forEach( button => {
 
-			button.addEventListener('mousedown', function() {
-				var _this = this;
-				calc.processAction(_this.getAttribute('data-key'));
-				_this.classList.add('pressed');
+			button.addEventListener('mousedown', () =>  {
+				this.processAction(button.dataset.key);
+				button.classList.add('pressed');
 				setTimeout(function() {
-					_this.classList.remove('pressed');
+					button.classList.remove('pressed');
 				}, 400);
 			});
 
 			button.addEventListener('mouseup', function() {
-				var _this = this;
-				_this.classList.remove('pressed');
+				button.classList.remove('pressed');
 			});
-		}
+		});
 	}
 
 	processAction(a) {
+
 		for(var i = 0, n = this.options.length; i < n; i++) {
 			var option = this.options[i];
 			if(a === option[0]) {
@@ -63,7 +60,6 @@ class Calculator {
 			this.processNumber(a);
 			return;
 		}
-
 	}
 
 	processEquals() {
@@ -91,7 +87,7 @@ class Calculator {
 	}
 
 	processMod() {
-		if (!!this.entered && !!!this.answer) {
+		if (this.entered && !this.answer) {
 		  return;
 		}
 	  
@@ -111,24 +107,22 @@ class Calculator {
 	}
 
 	processComma() {
-		if(!this.decimal) {
+		if(this.currentOutput.innerHTML.indexOf(".") == -1) {
 			this.current += '.';
 			this.currentOutput.innerHTML = this.current;
 		}
-
-		this.decimal = true;
 	}
 
 	processErase() {
 		this.current = this.current.slice(0, -1);
 		if (this.current === "") {
-		this.current = 0;
+			this.current = 0;
 		}
 		this.displayNumber(this.current, this.currentOutput);
 	}
 
 	processASDM(a) {
-        if (!!this.entered && !!!this.answer) {
+        if (this.entered && !this.answer) {
             return;
         }
     
