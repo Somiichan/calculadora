@@ -113,6 +113,7 @@ class Calculator {
 		}
 	}
 
+	
 	processErase() {
 		this.current = this.current.slice(0, -1);
 		if (this.current === "") {
